@@ -1,0 +1,64 @@
+version: '3'
+services:
+  consul-server-1:
+    hostname: consul-server-1
+    image: consul
+    ports:
+      - "8300:8300"
+      - "8301:8301"
+      - "8301:8301/udp"
+      - "8302:8302"
+      - "8600:8600"
+      - "8600:8600/udp"
+      - "8500:8500"
+    environment: 
+      - CONSUL_BIND_INTERFACE=eth0
+
+  consul-server-2:
+    hostname: consul-server-2
+    depends_on:
+      - "consul-server-1"
+    image: consul
+    environment: 
+      - CONSUL_BIND_INTERFACE=eth0
+    command: "agent -dev -join=consul-server-1"
+
+  consul-server-3:
+    hostname: consul-server-3
+    depends_on:
+      - "consul-server-1"
+    image: consul
+    environment: 
+      - CONSUL_BIND_INTERFACE=eth0
+    command: "agent -dev -join=consul-server-1"
+
+  nginx1:
+    depends_on:
+      - "consul-server-1"
+    build:
+      context: web
+      dockerfile: Dockerfile
+    hostname: nginx1
+    image: web
+    dns:
+      - 127.0.0.1
+      - 8.8.8.8
+
+  nginx2:
+    depends_on:
+      - "consul-server-1"
+    hostname: nginx2
+    image: web
+    dns:
+      - 127.0.0.1
+      - 8.8.8.8
+
+  nginx3:
+    depends_on:
+      - "consul-server-1"
+    hostname: nginx3
+    image: web
+    dns:
+      - 127.0.0.1
+      - 8.8.8.8
+

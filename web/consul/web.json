@@ -1,0 +1,30 @@
+{
+    "service": {
+        "name": "web",
+        "port": 80,
+        "tags": [
+            "web",
+            "application"
+        ],
+        "checks": [
+            {
+                "id": "port-status",
+                "name": "Web Application Status",
+                "tcp": "localhost:80",
+                "interval": "5s",
+                "timeout": "10s"
+            },
+            {
+                "id": "script-test",
+                "name": "Memory utilization",
+                "args": [
+                  "/bin/sh",
+                  "-c",
+                  "/usr/bin/free | awk '/Mem/{printf($3/$2*100)}' | awk '{ print($0); if($1 > 70) exit 1;}'"
+                ],
+                "interval": "10s",
+                "timeout": "1s"
+              }
+            ]
+    }
+}
