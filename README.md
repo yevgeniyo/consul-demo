@@ -28,6 +28,8 @@ Useful commands:
     - dig web.service.consul @127.0.0.1 ANY
     - consul members
     - UI works on localhost:8600   
+    - https://medium.com/velotio-perspectives/a-practical-guide-to-hashicorp-consul-part-2-3c0ebc0351e8
+    - https://github.com/fabiolb/fabio
 ```
 
 ## Build and run
